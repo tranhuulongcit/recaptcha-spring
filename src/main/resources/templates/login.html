@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script th:src="${'https://www.google.com/recaptcha/api.js?render=' + siteKey}"></script>
+</head>
+<body>
+
+    <div class="col-md-5" style="margin-left: auto; margin-right: 0; margin-top: 60px">
+        <form method="post" th:object="${loginDTO}" action="/login">
+            <div class="form-group">
+                <label th:for="userName">Email:</label>
+                <input type="text" class="form-control" placeholder="Enter email" th:field="*{userName}">
+            </div>
+            <div class="form-group">
+                <label th:for="password">Password:</label>
+                <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password" >
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" value="NO" th:field="*{remember}"> Remember me</label>
+            </div>
+            <input type="hidden" th:field="*{token}">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <script th:inline="javascript">
+            var siteKey = [[${siteKey}]];
+            grecaptcha.ready(function() {
+                grecaptcha.execute(siteKey, {action: 'homepage'}).then(function(token) {
+                    document.getElementById('token').value = token
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
